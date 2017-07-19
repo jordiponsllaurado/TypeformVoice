@@ -120,4 +120,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+
+    //Http client
+    compile 'com.loopj.android:android-async-http:1.4.9'
 }
