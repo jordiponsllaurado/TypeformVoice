@@ -41,6 +41,13 @@
 
         <include layout="@layout/item_result"/>
 
+        <Button
+            android:id="@+id/submitbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SubmitForm" />
+
         <ImageView
             android:id="@+id/ImageView01"
             android:layout_width="wrap_content"

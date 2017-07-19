@@ -45,8 +45,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
 
     private SpeechService mSpeechService;
     private String mCurrentPhotoPath;
+
 
     private VoiceRecorder mVoiceRecorder;
     private final VoiceRecorder.Callback mVoiceCallback = new VoiceRecorder.Callback() {
@@ -106,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private Button mCameraButton;
+    private Button mSubmitButton;
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -156,6 +162,30 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         mCameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dispatchTakePictureIntent();
+            }
+        });
+
+        mSubmitButton = (Button)findViewById(R.id.submitbtn);
+
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String json = null;
+                try {
+                    InputStream stream = getResources().openRawResource(R.raw.form);
+                    int size = stream.available();
+                    byte[] buffer = new byte[size];
+                    stream.read(buffer);
+                    stream.close();
+
+                    json = new String(buffer, "UTF-8");
+                    JSONObject jsonObject = new JSONObject(json);
+
+                    BobTheBuilder bob = new BobTheBuilder(jsonObject);
+                    bob.execute();
+
+                } catch (IOException ex) {
+                } catch (JSONException e) {
+                }
             }
         });
     }
