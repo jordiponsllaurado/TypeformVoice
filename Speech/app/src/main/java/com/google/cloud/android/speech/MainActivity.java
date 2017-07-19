@@ -22,10 +22,15 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,9 +41,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity implements MessageDialogFragment.Listener {
@@ -48,8 +59,11 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
     private static final String STATE_RESULTS = "results";
 
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
 
     private SpeechService mSpeechService;
+    private String mCurrentPhotoPath;
 
     private VoiceRecorder mVoiceRecorder;
     private final VoiceRecorder.Callback mVoiceCallback = new VoiceRecorder.Callback() {
@@ -79,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
 
     };
 
+    private static final int CAMERA_PIC_REQUEST = 1337;
+
     // Resource caches
     private int mColorHearing;
     private int mColorNotHearing;
@@ -88,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
     private TextView mText;
     private ResultAdapter mAdapter;
     private RecyclerView mRecyclerView;
+    private LinearLayoutManager mLayoutManager;
+    private Button mCameraButton;
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -123,8 +141,82 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         final ArrayList<String> results = savedInstanceState == null ? null :
                 savedInstanceState.getStringArrayList(STATE_RESULTS);
         mAdapter = new ResultAdapter(results);
+        // Now set the properties of the LinearLayoutManager
+        mLayoutManager = new LinearLayoutManager(MainActivity.this);
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+
+        // And now set it to the RecyclerView
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
         mRecyclerView.setAdapter(mAdapter);
+
+        mCameraButton = (Button)findViewById(R.id.camera_btn);
+
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
     }
+
+    /*private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImageView imageview = (ImageView) findViewById(R.id.ImageView01); //sets imageview as the bitmap
+            imageview.setImageBitmap(imageBitmap);
+        }
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                //TODO
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
 
     @Override
     protected void onStart() {
@@ -248,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
                             public void run() {
                                 if (isFinal) {
                                     mText.setText(null);
-                                    mAdapter.addResult(text); //TODO
+                                    mAdapter.addResult(text);
                                     mRecyclerView.smoothScrollToPosition(0);
                                 } else {
                                     mText.setText(text);
@@ -296,8 +388,8 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         }
 
         void addResult(String result) {
-            mResults.add(result);
-            notifyItemInserted(result.length());
+            mResults.add(0, result);
+            notifyItemInserted(0);
         }
 
         public ArrayList<String> getResults() {
