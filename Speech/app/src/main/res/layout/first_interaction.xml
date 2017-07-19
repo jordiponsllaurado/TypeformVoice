@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:gravity="center_vertical|center_horizontal"
+    android:baselineAligned="false">
+
+    <TextView
+        android:id="@+id/initialText"
+        android:layout_width="277dp"
+        android:layout_height="108dp"
+        android:layout_gravity="center_vertical|right"
+        android:layout_weight="0.03"
+        android:text="Hi Josep! \nI'm Bob the Builder, what would you like to create?"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|right"
+        android:text="Make me a Capuccino"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+</LinearLayout>

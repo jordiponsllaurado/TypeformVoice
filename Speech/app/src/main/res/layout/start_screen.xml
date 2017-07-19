@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:gravity="center_vertical|center_horizontal"
+    android:baselineAligned="false">
+
+    <TextView
+        android:id="@+id/initialText"
+        android:layout_width="277dp"
+        android:layout_height="108dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="52dp"
+        android:fontFamily="sans-serif"
+        android:text="Hi Josep, \nI'm Bob the Builder, what would you like to create?"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="213dp" />
+</android.support.constraint.ConstraintLayout>
