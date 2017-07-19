@@ -15,7 +15,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="52dp"
         android:fontFamily="sans-serif"
-        android:text="Hi Josep, \nI'm Bob the Builder, what would you like to create?"
+        android:text="Your typeform is DONE!\n\nDo you want to check the typeform first or to send it out now?"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         tools:layout_editor_absoluteX="54dp"

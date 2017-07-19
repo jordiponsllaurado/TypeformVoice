@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,14 +11,23 @@
     <TextView
         android:id="@+id/initialText"
         android:layout_width="277dp"
-        android:layout_height="108dp"
+        android:layout_height="158dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="52dp"
         android:fontFamily="sans-serif"
-        android:text="Hi Josep, \nI'm Bob the Builder, what would you like to create?"
+        android:text="The picture has been added to your block \n\nDo you want to change anything else?!"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
+        android:textStyle="bold"
         tools:layout_editor_absoluteX="54dp"
         tools:layout_editor_absoluteY="204dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="223dp"
+        android:layout_height="127dp"
+        app:srcCompat="@android:drawable/editbox_dropdown_light_frame"
+        tools:layout_editor_absoluteX="81dp"
+        tools:layout_editor_absoluteY="49dp" />
 </android.support.constraint.ConstraintLayout>
