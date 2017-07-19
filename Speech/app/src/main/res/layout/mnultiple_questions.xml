@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:gravity="center_vertical|center_horizontal"
+    android:baselineAligned="false"
+    android:fontFamily="@font/AvenirNext"
+    >
+
+    <TextView
+        android:id="@+id/initialText"
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="52dp"
+        android:fontFamily="@font/AvenirNext"
+        android:text="Make me a Capuccino"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="#73BEC8"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="136dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="277dp"
+        android:layout_height="108dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="52dp"
+        android:fontFamily="@font/AvenirNext"
+        android:text="I can't do that, but this is a list of things I can do for you instead."
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="213dp"
+        />
+
+    <Button
+        android:id="@+id/registrationForm"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="277dp"
+        android:layout_height="42dp"
+        android:background="#308BCBCA"
+        android:text="Registration Form"
+        android:textAllCaps="false"
+        android:textColor="#73BEC8"
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="432dp"
+        android:textAlignment="viewStart"
+        android:paddingLeft="15dip"
+        android:fontFamily="@font/AvenirNext"
+        />
+
+    <Button
+        android:id="@+id/satisfactionForm"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="277dp"
+        android:layout_height="42dp"
+        android:background="#308BCBCA"
+        android:text="Satisfaction Form"
+        android:textAllCaps="false"
+        android:textColor="#73BEC8"
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="383dp"
+        android:textAlignment="viewStart"
+        android:paddingLeft="15dip"
+        android:fontFamily="@font/AvenirNext"
+        />
+
+    <Button
+        android:id="@+id/contactForm"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="277dp"
+        android:layout_height="42dp"
+        android:background="#308BCBCA"
+        android:text="Contact Form"
+        android:textAllCaps="false"
+        android:textColor="#73BEC8"
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="481dp"
+        android:textAlignment="viewStart"
+        android:paddingLeft="15dip"
+        android:fontFamily="@font/AvenirNext"
+        />
+
+    <Button
+        android:id="@+id/scratch"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="277dp"
+        android:layout_height="42dp"
+        android:background="#308BCBCA"
+        android:text="Start from scratch"
+        android:textAllCaps="false"
+        android:textColor="#73BEC8"
+        tools:layout_editor_absoluteX="68dp"
+        tools:layout_editor_absoluteY="333dp"
+        android:textAlignment="viewStart"
+        android:paddingLeft="15dip"
+        android:fontFamily="@font/AvenirNext"
+        />
+</android.support.constraint.ConstraintLayout>
