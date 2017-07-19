@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.FileProvider;
@@ -36,6 +37,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,9 +56,12 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+
+import static com.google.cloud.android.speech.R.id.status;
 
 
-public class MainActivity extends AppCompatActivity implements MessageDialogFragment.Listener {
+public class MainActivity extends AppCompatActivity implements MessageDialogFragment.Listener, TextToSpeech.OnInitListener, TextToSpeech.OnUtteranceCompletedListener {
 
     private static final String FRAGMENT_MESSAGE_DIALOG = "message_dialog";
 
@@ -68,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
 
     private SpeechService mSpeechService;
     private String mCurrentPhotoPath;
+    public TextToSpeech mTts;
+
 
 
     private VoiceRecorder mVoiceRecorder;
@@ -139,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         mColorHearing = ResourcesCompat.getColor(resources, R.color.status_hearing, theme);
         mColorNotHearing = ResourcesCompat.getColor(resources, R.color.status_not_hearing, theme);
 
-        mStatus = (TextView) findViewById(R.id.status);
+        mStatus = (TextView) findViewById(status);
         mText = (TextView) findViewById(R.id.text);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -188,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
                 }
             }
         });
+        mTts = new TextToSpeech(this, this);
     }
 
     /*private void dispatchTakePictureIntent() {
@@ -372,6 +380,8 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
                                     mText.setText(null);
                                     mAdapter.addResult(text);
                                     mRecyclerView.smoothScrollToPosition(0);
+                                    mVoiceRecorder.stop();
+                                    mTts.speak("Hello world", TextToSpeech.QUEUE_FLUSH, null);
                                 } else {
                                     mText.setText(text);
                                 }
@@ -380,6 +390,22 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
                     }
                 }
             };
+
+    @Override
+    public void onInit(int i) {
+        if (i == TextToSpeech.SUCCESS) {
+            mTts.setLanguage(Locale.getDefault());
+        } else {
+            mTts = null;
+            Log.e("MainActivity", "Failed to initialize the TextToSpeech engine");
+        }
+    }
+
+    @Override
+    public void onUtteranceCompleted(String utteranceId) {
+        mVoiceRecorder.start();
+    }
+
 
     private static class ViewHolder extends RecyclerView.ViewHolder {
 
