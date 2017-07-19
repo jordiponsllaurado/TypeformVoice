@@ -22,6 +22,8 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements MessageDialogFragment.Listener {
 
+    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 1;
     private static final String FRAGMENT_MESSAGE_DIALOG = "message_dialog";
 
@@ -165,6 +167,11 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
                                 if (isFinal) {
                                     mTextResult.setText(text);
                                     mVoiceRecorder.stop();
+                                    //TODO new intent
+                                    Intent intent = new Intent(getApplicationContext(), CommandNotFound.class);
+
+                                    intent.putExtra(EXTRA_MESSAGE, text);
+                                    startActivity(intent);
                                 } else {
                                     mTextResult.setText(text);
                                 }
