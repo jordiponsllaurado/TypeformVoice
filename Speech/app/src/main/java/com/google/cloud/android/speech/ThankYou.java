@@ -23,6 +23,8 @@ import com.skyfishjy.library.RippleBackground;
 import java.util.HashMap;
 import java.util.Locale;
 
+import static com.google.cloud.android.speech.MainActivity.EXTRA_MESSAGE;
+
 /**
  * Created by jordipons on 20/07/2017.
  */
@@ -163,7 +165,10 @@ public class ThankYou extends AppCompatActivity {
                                 if (isFinal) {
                                     mTextResult.setText(text);
                                     mVoiceRecorder.stop();
+                                    Intent messageIntent = getIntent();
+                                    String message = messageIntent.getStringExtra(EXTRA_MESSAGE);
                                     Intent intent = new Intent(getApplicationContext(), Camera.class);
+                                    intent.putExtra(EXTRA_MESSAGE, message);
                                     startActivity(intent);
                                 } else {
                                     mTextResult.setText(text);

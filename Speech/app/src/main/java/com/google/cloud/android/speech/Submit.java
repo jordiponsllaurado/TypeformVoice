@@ -5,20 +5,17 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.skyfishjy.library.RippleBackground;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -29,12 +26,12 @@ import static com.google.cloud.android.speech.MainActivity.EXTRA_MESSAGE;
  * Created by jordipons on 20/07/2017.
  */
 
-public class NewTitle extends AppCompatActivity {
+public class Submit extends AppCompatActivity {
 
     public TextToSpeech mTts;
     private TextView mText;
     private TextView mTextResult;
-
+    public BobTheBuilder bob;
 
     private SpeechService mSpeechService;
 
@@ -45,21 +42,64 @@ public class NewTitle extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_title);
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(EXTRA_MESSAGE);
-        // Capture the layout's TextView and set the string as its text
-        mText = (TextView) findViewById(R.id.welcome_text);
-        mText.setText(Html.fromHtml("Second question would be <b>" + message + "?</b> as an opinion scale from 1 to 10."));
-        TextView isok = (TextView) findViewById(R.id.isok);
-        isok.setText(Html.fromHtml("Do you want to <b>accept</b>, <b>rephrase</b> or <b>remove</b> the block?"));
-        mTextResult = (TextView) findViewById(R.id.result);
-        final Resources resources = getResources();
-        final Resources.Theme theme = getTheme();
-        mColorHearing = ResourcesCompat.getColor(resources, R.color.status_hearing, theme);
-        mColorNotHearing = ResourcesCompat.getColor(resources, R.color.status_not_hearing, theme);
-        // Prepare Cloud Speech API
-        bindService(new Intent(this, SpeechService.class), mServiceConnection, BIND_AUTO_CREATE);
+        setContentView(R.layout.submit);
+
+        Intent messageIntent = getIntent();
+        String message = messageIntent.getStringExtra(EXTRA_MESSAGE);
+
+        String json = "{" +
+                "  \"title\":\"Challenge satisfaction survey\"," +
+                "\"settings\": {" +
+                "    \"language\": \"en\"" +
+                "    }," +
+                "            \"thankyou_screens\": [" +
+                "    {" +
+                "      \"title\": \"Thank you for participating!\"," +
+                "      \"properties\": {" +
+                "        \"show_button\": true," +
+                "        \"button_text\": \"start\"," +
+                "        \"button_mode\": \"redirect\"," +
+                "        \"redirect_url\": \"http://www.typeform.com\"," +
+                "        \"share_icons\": false" +
+                "    }" +
+                "}" +
+                "  ]," +
+                "          \"fields\": [" +
+                "          {" +
+                "          \"title\": \"What's your name?\"," +
+                "          \"type\": \"short_text\"," +
+                "          \"validations\": {" +
+                "          \"required\": false," +
+                "          \"max_length\": 20" +
+                "          }" +
+                "          }," +
+                "          {" +
+                "          \"title\": \"" + message + "\"," +
+                "          \"type\": \"opinion_scale\"," +
+                "          \"properties\": {" +
+                "          \"description\": \"\"," +
+                "          \"steps\": 10," +
+                "          \"start_at_one\": true," +
+                "          \"labels\": {" +
+                "          \"left\": \" left label\"," +
+                "          \"center\": \"center label\"," +
+                "          \"right\": \"right label\"" +
+                "          }" +
+                "          }," +
+                "          \"validations\": {" +
+                "          \"required\": false" +
+                "          }" +
+                "          }" +
+                "          ]" +
+                "          }";
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+
+            bob = new BobTheBuilder(jsonObject);
+            bob.execute();
+        } catch (JSONException e) {
+        }
+
 
         mTts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
 
@@ -75,9 +115,6 @@ public class NewTitle extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
-                                    final RippleBackground rippleBackground=(RippleBackground)findViewById(R.id.content);
-                                    ImageView imageView=(ImageView)findViewById(R.id.centerImage);
-                                    rippleBackground.startRippleAnimation();
                                     startVoiceRecorder();
                                 }
                             });
@@ -87,7 +124,7 @@ public class NewTitle extends AppCompatActivity {
                     HashMap<String, String> params = new HashMap<String, String>();
 
                     params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");
-                    mTts.speak(mText.getText().toString().replace("<b>", "").replace("</b>", "") + "Do you want to accept, rephrase, or remove the block?", TextToSpeech.QUEUE_FLUSH, params);
+                    mTts.speak("Your Typeform is Done!\n Do you want to check the Typeform first or to send it out now?", TextToSpeech.QUEUE_FLUSH, params);
                 } else {
                     mTts = null;
                     Log.e("MainActivity", "Failed to initialize the TextToSpeech engine");
@@ -137,6 +174,7 @@ public class NewTitle extends AppCompatActivity {
     };
 
 
+
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
@@ -168,11 +206,8 @@ public class NewTitle extends AppCompatActivity {
                                 if (isFinal) {
                                     mTextResult.setText(text);
                                     mVoiceRecorder.stop();
-                                    Intent messageIntent = getIntent();
-                                    String message = messageIntent.getStringExtra(EXTRA_MESSAGE);
-                                    Intent intent = new Intent(getApplicationContext(), ThankYou.class);
-                                    intent.putExtra(EXTRA_MESSAGE, message);
-                                    startActivity(intent);
+                                    String responseBody = bob.getResponseBody();
+                                    //TODO: OPEN GMAIL
                                 } else {
                                     mTextResult.setText(text);
                                 }

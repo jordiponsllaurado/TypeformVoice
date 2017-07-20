@@ -23,6 +23,8 @@ import com.skyfishjy.library.RippleBackground;
 import java.util.HashMap;
 import java.util.Locale;
 
+import static com.google.cloud.android.speech.MainActivity.EXTRA_MESSAGE;
+
 /**
  * Created by jordipons on 20/07/2017.
  */
@@ -164,6 +166,7 @@ public class SecondQuestion extends AppCompatActivity {
                                     mTextResult.setText(text);
                                     mVoiceRecorder.stop();
                                     Intent intent = new Intent(getApplicationContext(), WhatTitle.class);
+                                    intent.putExtra(EXTRA_MESSAGE, text);
                                     startActivity(intent);
                                 } else {
                                     mTextResult.setText(text);

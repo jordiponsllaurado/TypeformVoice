@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import static com.google.cloud.android.speech.MainActivity.EXTRA_MESSAGE;
+
 /**
  * Created by jordipons on 20/07/2017.
  */
@@ -162,8 +164,8 @@ public class Camera extends AppCompatActivity {
                                 if (isFinal) {
                                     mTextResult.setText(text);
                                     mVoiceRecorder.stop();
-                                    //Intent intent = new Intent(getApplicationContext(), Camera.class);
-                                    //startActivity(intent);
+                                    Intent intent = new Intent(getApplicationContext(), Submit.class);
+                                    startActivity(intent);
                                 } else {
                                     mTextResult.setText(text);
                                 }
@@ -215,7 +217,12 @@ public class Camera extends AppCompatActivity {
 
                                     @Override
                                     public void run() {
-                                        startVoiceRecorder();
+                                        Intent intent = new Intent(getApplicationContext(), Submit.class);
+
+                                        Intent messageIntent = getIntent();
+                                        String message = messageIntent.getStringExtra(EXTRA_MESSAGE);
+                                        intent.putExtra(EXTRA_MESSAGE, message);
+                                        startActivity(intent);
                                     }
                                 });
                             }
@@ -224,7 +231,7 @@ public class Camera extends AppCompatActivity {
                         HashMap<String, String> params = new HashMap<String, String>();
 
                         params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");
-                        mTts.speak("The picture has added to your block.\n Do you want to change anything else?", TextToSpeech.QUEUE_FLUSH, params);
+                        mTts.speak("The picture has added to your block.", TextToSpeech.QUEUE_FLUSH, params);
                     } else {
                         mTts = null;
                         Log.e("MainActivity", "Failed to initialize the TextToSpeech engine");
