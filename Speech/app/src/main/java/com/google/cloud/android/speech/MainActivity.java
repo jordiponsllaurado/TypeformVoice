@@ -167,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
                                 if (isFinal) {
                                     mTextResult.setText(text);
                                     mVoiceRecorder.stop();
-                                    //TODO new intent
                                     Intent intent = new Intent(getApplicationContext(), CommandNotFound.class);
 
                                     intent.putExtra(EXTRA_MESSAGE, text);
