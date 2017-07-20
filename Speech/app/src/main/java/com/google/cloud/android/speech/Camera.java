@@ -13,11 +13,9 @@ import android.os.IBinder;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +34,6 @@ public class Camera extends AppCompatActivity {
 
     public TextToSpeech mTts;
     private TextView mText;
-    private TextView mStatus;
     private TextView mTextResult;
 
     private static final int CAMERA_PIC_REQUEST = 1337;
@@ -57,11 +54,8 @@ public class Camera extends AppCompatActivity {
         setContentView(R.layout.camera);
 
         mTextResult = (TextView) findViewById(R.id.result);
-        mStatus = (TextView) findViewById(R.id.status);
         final Resources resources = getResources();
         final Resources.Theme theme = getTheme();
-        mColorHearing = ResourcesCompat.getColor(resources, R.color.status_hearing, theme);
-        mColorNotHearing = ResourcesCompat.getColor(resources, R.color.status_not_hearing, theme);
         // Prepare Cloud Speech API
         //bindService(new Intent(this, SpeechService.class), mServiceConnection, BIND_AUTO_CREATE);
 
@@ -116,7 +110,6 @@ public class Camera extends AppCompatActivity {
 
         @Override
         public void onVoiceStart() {
-            showStatus(true);
             if (mSpeechService != null) {
                 mSpeechService.startRecognizing(mVoiceRecorder.getSampleRate());
             }
@@ -131,7 +124,6 @@ public class Camera extends AppCompatActivity {
 
         @Override
         public void onVoiceEnd() {
-            showStatus(false);
             if (mSpeechService != null) {
                 mSpeechService.finishRecognizing();
             }
@@ -139,22 +131,12 @@ public class Camera extends AppCompatActivity {
 
     };
 
-    private void showStatus(final boolean hearingVoice) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStatus.setTextColor(hearingVoice ? mColorHearing : mColorNotHearing);
-            }
-        });
-    }
-
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder binder) {
             mSpeechService = SpeechService.from(binder);
             mSpeechService.addListener(mSpeechServiceListener);
-            mStatus.setVisibility(View.VISIBLE);
         }
 
         @Override

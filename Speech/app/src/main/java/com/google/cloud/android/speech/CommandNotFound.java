@@ -14,8 +14,10 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.skyfishjy.library.RippleBackground;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -30,7 +32,6 @@ public class CommandNotFound  extends AppCompatActivity {
 
     public TextToSpeech mTts;
     private TextView mText;
-    private TextView mStatus;
     private TextView mTextResult;
 
 
@@ -49,7 +50,6 @@ public class CommandNotFound  extends AppCompatActivity {
         String message = intent.getStringExtra(EXTRA_MESSAGE);
 
         mTextResult = (TextView) findViewById(R.id.result);
-        mStatus = (TextView) findViewById(R.id.status);
         final Resources resources = getResources();
         final Resources.Theme theme = getTheme();
         mColorHearing = ResourcesCompat.getColor(resources, R.color.status_hearing, theme);
@@ -77,6 +77,9 @@ public class CommandNotFound  extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
+                                    final RippleBackground rippleBackground=(RippleBackground)findViewById(R.id.content);
+                                    ImageView imageView=(ImageView)findViewById(R.id.centerImage);
+                                    rippleBackground.startRippleAnimation();
                                     startVoiceRecorder();
                                 }
                             });
@@ -114,7 +117,6 @@ public class CommandNotFound  extends AppCompatActivity {
 
         @Override
         public void onVoiceStart() {
-            showStatus(true);
             if (mSpeechService != null) {
                 mSpeechService.startRecognizing(mVoiceRecorder.getSampleRate());
             }
@@ -129,7 +131,6 @@ public class CommandNotFound  extends AppCompatActivity {
 
         @Override
         public void onVoiceEnd() {
-            showStatus(false);
             if (mSpeechService != null) {
                 mSpeechService.finishRecognizing();
             }
@@ -137,14 +138,6 @@ public class CommandNotFound  extends AppCompatActivity {
 
     };
 
-    private void showStatus(final boolean hearingVoice) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStatus.setTextColor(hearingVoice ? mColorHearing : mColorNotHearing);
-            }
-        });
-    }
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -152,7 +145,6 @@ public class CommandNotFound  extends AppCompatActivity {
         public void onServiceConnected(ComponentName componentName, IBinder binder) {
             mSpeechService = SpeechService.from(binder);
             mSpeechService.addListener(mSpeechServiceListener);
-            mStatus.setVisibility(View.VISIBLE);
         }
 
         @Override

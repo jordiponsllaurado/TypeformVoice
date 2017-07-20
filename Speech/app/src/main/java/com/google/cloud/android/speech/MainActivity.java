@@ -15,8 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.skyfishjy.library.RippleBackground;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -31,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
     public TextToSpeech mTts;
     private TextView mText;
     private TextView mTextResult;
-    private TextView mStatus;
 
     private SpeechService mSpeechService;
 
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         mText = (TextView) findViewById(R.id.welcome_text);
         mText.setText(Html.fromHtml("Hi <b>Josep</b>, \nI'm Bob the Builder, what would you like to create?"));
         mTextResult = (TextView) findViewById(R.id.result);
-        mStatus = (TextView) findViewById(R.id.status);
         final Resources resources = getResources();
         final Resources.Theme theme = getTheme();
         mColorHearing = ResourcesCompat.getColor(resources, R.color.status_hearing, theme);
@@ -68,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
 
                                 @Override
                                 public void run() {
+                                    final RippleBackground rippleBackground=(RippleBackground)findViewById(R.id.content);
+                                    ImageView imageView=(ImageView)findViewById(R.id.centerImage);
+                                    rippleBackground.startRippleAnimation();
                                     startVoiceRecorder();
                                 }
                             });
@@ -105,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
 
         @Override
         public void onVoiceStart() {
-            showStatus(true);
             if (mSpeechService != null) {
                 mSpeechService.startRecognizing(mVoiceRecorder.getSampleRate());
             }
@@ -120,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
 
         @Override
         public void onVoiceEnd() {
-            showStatus(false);
             if (mSpeechService != null) {
                 mSpeechService.finishRecognizing();
             }
@@ -128,22 +129,12 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
 
     };
 
-    private void showStatus(final boolean hearingVoice) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mStatus.setTextColor(hearingVoice ? mColorHearing : mColorNotHearing);
-            }
-        });
-    }
-
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder binder) {
             mSpeechService = SpeechService.from(binder);
             mSpeechService.addListener(mSpeechServiceListener);
-            mStatus.setVisibility(View.VISIBLE);
         }
 
         @Override
