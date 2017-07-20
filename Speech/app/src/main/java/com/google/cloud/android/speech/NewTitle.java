@@ -82,7 +82,7 @@ public class NewTitle extends AppCompatActivity {
                     HashMap<String, String> params = new HashMap<String, String>();
 
                     params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");
-                    mTts.speak(mText.getText().toString().replace("<b>", "").replace("</b>", ""), TextToSpeech.QUEUE_FLUSH, params);
+                    mTts.speak(mText.getText().toString().replace("<b>", "").replace("</b>", "") + "Do you want to accept, rephrase or remove the block?", TextToSpeech.QUEUE_FLUSH, params);
                 } else {
                     mTts = null;
                     Log.e("MainActivity", "Failed to initialize the TextToSpeech engine");

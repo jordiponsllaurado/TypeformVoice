@@ -76,7 +76,7 @@ public class SecondQuestion extends AppCompatActivity {
                     HashMap<String, String> params = new HashMap<String, String>();
 
                     params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");
-                    mTts.speak("Second question would be How would you rate our last meeting?\nas an opinion scale from 1 to 10. \n\n Is that ok?", TextToSpeech.QUEUE_FLUSH, params);
+                    mTts.speak("Second question would be How would you rate our last meeting?\nas an opinion scale from 1 to 10. \n\n Do you want to accept, rephrase or remove the block?", TextToSpeech.QUEUE_FLUSH, params);
                 } else {
                     mTts = null;
                     Log.e("MainActivity", "Failed to initialize the TextToSpeech engine");
