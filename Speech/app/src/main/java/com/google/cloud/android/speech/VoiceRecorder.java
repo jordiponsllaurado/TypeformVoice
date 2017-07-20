@@ -23,7 +23,7 @@ import android.support.annotation.NonNull;
 
 
 /**
- * Continuously records audio and notifies the {@link VoiceRecorder.Callback} when voice (or any
+ * Continuously records audio and notifies the {@link Callback} when voice (or any
  * sound) is heard.
  *
  * <p>The recorded audio format is always {@link AudioFormat#ENCODING_PCM_16BIT} and

@@ -21,17 +21,17 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements MessageDialogFragment.Listener {
+/**
+ * Created by jordipons on 20/07/2017.
+ */
 
-    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
-
-    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 1;
-    private static final String FRAGMENT_MESSAGE_DIALOG = "message_dialog";
+public class SecondQuestion extends AppCompatActivity {
 
     public TextToSpeech mTts;
     private TextView mText;
-    private TextView mTextResult;
     private TextView mStatus;
+    private TextView mTextResult;
+
 
     private SpeechService mSpeechService;
 
@@ -42,9 +42,8 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mText = (TextView) findViewById(R.id.welcome_text);
-        mText.setText(Html.fromHtml("Hi <b>Josep</b>, \nI'm Bob the Builder, what would you like to create?"));
+        setContentView(R.layout.second_question);
+
         mTextResult = (TextView) findViewById(R.id.result);
         mStatus = (TextView) findViewById(R.id.status);
         final Resources resources = getResources();
@@ -53,7 +52,10 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         mColorNotHearing = ResourcesCompat.getColor(resources, R.color.status_not_hearing, theme);
         // Prepare Cloud Speech API
         bindService(new Intent(this, SpeechService.class), mServiceConnection, BIND_AUTO_CREATE);
-
+        mText = (TextView) findViewById(R.id.welcome_text);
+        mText.setText(Html.fromHtml("Second question would be <b>How would you rate our last meeting?</b> as an opinion scale from 1 to 10."));
+        TextView isok = (TextView) findViewById(R.id.isok);
+        isok.setText(Html.fromHtml("Do you want to <b>accept</b>, <b>rephrase</b> or <b>remove</b> the block?"));
         mTts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
 
             @Override
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
                     HashMap<String, String> params = new HashMap<String, String>();
 
                     params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");
-                    mTts.speak(mText.getText().toString(), TextToSpeech.QUEUE_FLUSH, params);
+                    mTts.speak("Second question would be How would you rate our last meeting?\nas an opinion scale from 1 to 10. \n\n Do you want to accept, rephrase or remove the block?", TextToSpeech.QUEUE_FLUSH, params);
                 } else {
                     mTts = null;
                     Log.e("MainActivity", "Failed to initialize the TextToSpeech engine");
@@ -169,9 +171,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
                                 if (isFinal) {
                                     mTextResult.setText(text);
                                     mVoiceRecorder.stop();
-                                    Intent intent = new Intent(getApplicationContext(), CommandNotFound.class);
-
-                                    intent.putExtra(EXTRA_MESSAGE, text);
+                                    Intent intent = new Intent(getApplicationContext(), WhatTitle.class);
                                     startActivity(intent);
                                 } else {
                                     mTextResult.setText(text);
@@ -190,14 +190,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
             }
             mVoiceRecorder = new VoiceRecorder(mVoiceCallback);
             mVoiceRecorder.start();
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                Manifest.permission.RECORD_AUDIO)) {
-            showPermissionMessageDialog();
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
-                    REQUEST_RECORD_AUDIO_PERMISSION);
         }
-
     }
 
     private void stopVoiceRecorder() {
@@ -205,17 +198,5 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
             mVoiceRecorder.stop();
             mVoiceRecorder = null;
         }
-    }
-
-    @Override
-    public void onMessageDialogDismissed() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},
-                REQUEST_RECORD_AUDIO_PERMISSION);
-    }
-
-    private void showPermissionMessageDialog() {
-        MessageDialogFragment
-                .newInstance(getString(R.string.permission_message))
-                .show(getSupportFragmentManager(), FRAGMENT_MESSAGE_DIALOG);
     }
 }

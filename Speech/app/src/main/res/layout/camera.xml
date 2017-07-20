@@ -4,33 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/content_main"
     tools:context="com.google.cloud.android.speech.MainActivity">
 
 
     <TextView
         android:id="@+id/welcome_text"
         android:layout_width="277dp"
-        android:layout_height="108dp"
+        android:layout_height="148dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="52dp"
         android:fontFamily="@+font/AvenirNext"
-        android:text="Hi Josep, \nI'm Bob the Builder, what would you like to create?"
+        android:text="The piture has added to your block."
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="60dp"
         app:layout_constraintTop_toTopOf="parent"/>
-
     <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Recording"
+        android:id="@+id/isok"
+        android:layout_width="277dp"
+        android:layout_height="148dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="52dp"
+        android:fontFamily="@+font/AvenirNext"
+        android:text="Do you want to change anything else?"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="60dp"
         app:layout_constraintTop_toTopOf="@id/welcome_text"/>
 
     <TextView
@@ -38,10 +46,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recording"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/ImageView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_menu_report_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="@id/status"
-        app:layout_constraintTop_toTopOf="@id/welcome_text" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="60dp"
+        app:layout_constraintTop_toTopOf="@id/isok"
+        android:layout_weight="1" />
+
 
 </android.support.constraint.ConstraintLayout>
 
