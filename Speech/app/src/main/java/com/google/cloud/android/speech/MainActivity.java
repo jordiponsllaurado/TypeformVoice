@@ -12,6 +12,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mText = (TextView) findViewById(R.id.welcome_text);
+        mText.setText(Html.fromHtml("Hi <b>Josep</b>, \nI'm Bob the Builder, what would you like to create?"));
         mTextResult = (TextView) findViewById(R.id.result);
         mStatus = (TextView) findViewById(R.id.status);
         final Resources resources = getResources();

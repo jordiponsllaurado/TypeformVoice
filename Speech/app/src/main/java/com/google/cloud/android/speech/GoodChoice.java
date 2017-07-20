@@ -12,6 +12,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -128,7 +129,7 @@ public class GoodChoice extends AppCompatActivity {
                                     String question = "The first question would be <b>What's your first name?</b>\n" +
                                             "as a short text field.";
                                     TextView satisfactinoDefinition =(TextView) findViewById(R.id.your_name);
-                                    satisfactinoDefinition.setText(question);
+                                    satisfactinoDefinition.setText(Html.fromHtml(question));
                                     satisfactinoDefinition.setTextColor(getResources().getColor(R.color.black));
                                     explainOptions(question.replace("<b>", "").replace("</b>", ""));
                                 }
@@ -168,7 +169,7 @@ public class GoodChoice extends AppCompatActivity {
 
                                     String question = "Do you want to <b>accept</b>, <b>rephrase</b> or <b>remove</b> the block?";
                                     TextView questionView =(TextView) findViewById(R.id.question);
-                                    questionView.setText(question);
+                                    questionView.setText(Html.fromHtml(question));
                                     questionView.setTextColor(getResources().getColor(R.color.black));
 
                                     explainQuestion(question.replace("<b>", "").replace("</b>", ""));

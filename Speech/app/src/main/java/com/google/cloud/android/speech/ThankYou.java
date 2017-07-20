@@ -12,6 +12,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -52,7 +53,9 @@ public class ThankYou extends AppCompatActivity {
         // Prepare Cloud Speech API
         bindService(new Intent(this, SpeechService.class), mServiceConnection, BIND_AUTO_CREATE);
         mText = (TextView) findViewById(R.id.welcome_text);
-
+        mText.setText(Html.fromHtml("Last block would be <b>Thank you for participating</b> as a thank you screen."));
+        TextView isok = (TextView) findViewById(R.id.isok);
+        isok.setText(Html.fromHtml("Do you want to <b>accept</b>, <b>rephrase</b>, <b>add a picture</b> or <b>remove</b> the block?"));
         mTts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
 
             @Override

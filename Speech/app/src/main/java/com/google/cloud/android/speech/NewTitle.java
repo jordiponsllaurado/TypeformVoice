@@ -12,6 +12,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -48,8 +49,7 @@ public class NewTitle extends AppCompatActivity {
         String message = intent.getStringExtra(EXTRA_MESSAGE);
         // Capture the layout's TextView and set the string as its text
         mText = (TextView) findViewById(R.id.welcome_text);
-        mText.setText("Second question would be <b>" + message + "?</b> as an opinion scale from 1 to 10.");
-
+        mText.setText(Html.fromHtml("Second question would be <b>" + message + "?</b> as an opinion scale from 1 to 10."));
         mTextResult = (TextView) findViewById(R.id.result);
         mStatus = (TextView) findViewById(R.id.status);
         final Resources resources = getResources();
