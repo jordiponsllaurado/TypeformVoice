@@ -97,7 +97,7 @@ public class Camera extends AppCompatActivity {
         });
     }
 
-    @Override
+    /*@Override
     protected void onStop() {
         // Stop listening to voice
         stopVoiceRecorder();
@@ -108,7 +108,7 @@ public class Camera extends AppCompatActivity {
         mSpeechService = null;
 
         super.onStop();
-    }
+    }*/
 
     //////////////// SPEECH API ////////////////
     private VoiceRecorder mVoiceRecorder;

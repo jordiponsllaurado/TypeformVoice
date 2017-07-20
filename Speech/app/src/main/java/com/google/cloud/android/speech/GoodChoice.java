@@ -9,7 +9,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -67,14 +66,16 @@ public class GoodChoice extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
-                                    ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.content_main);
-                                    TextView satisfactinoDefinition = new TextView(getApplicationContext());
+                                    TextView previous =(TextView) findViewById(R.id.welcome_text);
+                                    previous.setTextColor(getResources().getColor(R.color.blank));
+
                                     String satisfactionDef = "Satisfaction forms can help you find out what people think of your company, get feedback on customer service, and more.";
+                                    TextView satisfactinoDefinition =(TextView) findViewById(R.id.satisfaction);
                                     satisfactinoDefinition.setText(satisfactionDef);
-                                    ConstraintLayout.LayoutParams newParams = new ConstraintLayout.LayoutParams(
-                                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                            ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                                    layout.addView(satisfactinoDefinition, -1, newParams);
+                                    satisfactinoDefinition.setTextColor(getResources().getColor(R.color.black));
+
+
+
                                     explainSatisfaction(satisfactionDef);
                                 }
                             });
@@ -121,15 +122,14 @@ public class GoodChoice extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
-                                    ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.content_main);
-                                    TextView satisfactinoDefinition = new TextView(getApplicationContext());
+                                    TextView previous =(TextView) findViewById(R.id.satisfaction);
+                                    previous.setTextColor(getResources().getColor(R.color.blank));
+
                                     String question = "The first question would be <b>What's your first name?</b>\n" +
                                             "as a short text field.";
+                                    TextView satisfactinoDefinition =(TextView) findViewById(R.id.your_name);
                                     satisfactinoDefinition.setText(question);
-                                    ConstraintLayout.LayoutParams newParams = new ConstraintLayout.LayoutParams(
-                                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                            ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                                    layout.addView(satisfactinoDefinition, -1, newParams);
+                                    satisfactinoDefinition.setTextColor(getResources().getColor(R.color.black));
                                     explainOptions(question.replace("<b>", "").replace("</b>", ""));
                                 }
                             });
@@ -163,14 +163,14 @@ public class GoodChoice extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
-                                    ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.content_main);
-                                    TextView satisfactinoDefinition = new TextView(getApplicationContext());
+                                    TextView previous =(TextView) findViewById(R.id.your_name);
+                                    previous.setTextColor(getResources().getColor(R.color.blank));
+
                                     String question = "Do you want to <b>accept</b>, <b>rephrase</b> or <b>remove</b> the block?";
-                                    satisfactinoDefinition.setText(question);
-                                    ConstraintLayout.LayoutParams newParams = new ConstraintLayout.LayoutParams(
-                                            ConstraintLayout.LayoutParams.WRAP_CONTENT,
-                                            ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                                    layout.addView(satisfactinoDefinition, -1, newParams);
+                                    TextView questionView =(TextView) findViewById(R.id.question);
+                                    questionView.setText(question);
+                                    questionView.setTextColor(getResources().getColor(R.color.black));
+
                                     explainQuestion(question.replace("<b>", "").replace("</b>", ""));
                                 }
                             });

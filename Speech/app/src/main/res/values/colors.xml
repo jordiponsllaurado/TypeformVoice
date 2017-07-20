@@ -21,4 +21,6 @@
 
     <color name="status_hearing">#23a21f</color>
     <color name="status_not_hearing">#ff0000</color>
+    <color name="black">#000000</color>
+    <color name="blank">#00ffffff</color>
 </resources>

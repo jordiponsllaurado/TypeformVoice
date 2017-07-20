@@ -7,26 +7,39 @@
     android:id="@+id/content_main"
     tools:context="com.google.cloud.android.speech.MainActivity">
 
-    <TextView
-        android:id="@+id/welcome_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="The piture has added to your block."
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.364" />
 
     <TextView
-        android:id="@+id/isok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Do you want to change anything else?"
+        android:id="@+id/welcome_text"
+        android:layout_width="277dp"
+        android:layout_height="148dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="52dp"
+        android:fontFamily="@+font/AvenirNext"
+        android:text="The piture has added to your block."
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="60dp"
         app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/isok"
+        android:layout_width="277dp"
+        android:layout_height="148dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="52dp"
+        android:fontFamily="@+font/AvenirNext"
+        android:text="Do you want to change anything else?"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="60dp"
+        app:layout_constraintTop_toTopOf="@id/welcome_text"/>
 
     <TextView
         android:id="@+id/result"
@@ -50,7 +63,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@android:drawable/ic_menu_report_image"
-        app:layout_constraintTop_toTopOf="@id/status"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="60dp"
+        app:layout_constraintTop_toTopOf="@id/isok"
         android:layout_weight="1" />
 
 
