@@ -20,13 +20,11 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.Locale;
 
-import static com.google.cloud.android.speech.MainActivity.EXTRA_MESSAGE;
-
 /**
  * Created by jordipons on 20/07/2017.
  */
 
-public class NewTitle extends AppCompatActivity {
+public class ThankYou extends AppCompatActivity {
 
     public TextToSpeech mTts;
     private TextView mText;
@@ -43,12 +41,7 @@ public class NewTitle extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.new_title);
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(EXTRA_MESSAGE);
-        // Capture the layout's TextView and set the string as its text
-        mText = (TextView) findViewById(R.id.welcome_text);
-        mText.setText("Second question would be <b>" + message + "?</b> as an opinion scale from 1 to 10.");
+        setContentView(R.layout.thank_you);
 
         mTextResult = (TextView) findViewById(R.id.result);
         mStatus = (TextView) findViewById(R.id.status);
@@ -82,7 +75,7 @@ public class NewTitle extends AppCompatActivity {
                     HashMap<String, String> params = new HashMap<String, String>();
 
                     params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");
-                    mTts.speak(mText.getText().toString().replace("<b>", "").replace("</b>", "") + "Do you want to accept, rephrase, or remove the block?", TextToSpeech.QUEUE_FLUSH, params);
+                    mTts.speak("Last block would be Thank you for participating as a thank you screen.\n Do you want to accept, rephrase, add a picture or remove the block?", TextToSpeech.QUEUE_FLUSH, params);
                 } else {
                     mTts = null;
                     Log.e("MainActivity", "Failed to initialize the TextToSpeech engine");
@@ -174,8 +167,8 @@ public class NewTitle extends AppCompatActivity {
                                 if (isFinal) {
                                     mTextResult.setText(text);
                                     mVoiceRecorder.stop();
-                                    Intent intent = new Intent(getApplicationContext(), ThankYou.class);
-                                    startActivity(intent);
+                                    //TODO Intent intent = new Intent(getApplicationContext(), ThankYou.class);
+                                    //startActivity(intent);
                                 } else {
                                     mTextResult.setText(text);
                                 }
