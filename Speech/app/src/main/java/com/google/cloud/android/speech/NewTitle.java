@@ -50,6 +50,8 @@ public class NewTitle extends AppCompatActivity {
         // Capture the layout's TextView and set the string as its text
         mText = (TextView) findViewById(R.id.welcome_text);
         mText.setText(Html.fromHtml("Second question would be <b>" + message + "?</b> as an opinion scale from 1 to 10."));
+        TextView isok = (TextView) findViewById(R.id.isok);
+        isok.setText(Html.fromHtml("Do you want to <b>accept</b>, <b>rephrase</b> or <b>remove</b> the block?"));
         mTextResult = (TextView) findViewById(R.id.result);
         mStatus = (TextView) findViewById(R.id.status);
         final Resources resources = getResources();
