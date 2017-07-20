@@ -20,11 +20,13 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.Locale;
 
+import static com.google.cloud.android.speech.MainActivity.EXTRA_MESSAGE;
+
 /**
  * Created by jordipons on 20/07/2017.
  */
 
-public class SecondQuestion extends AppCompatActivity {
+public class NewTitle extends AppCompatActivity {
 
     public TextToSpeech mTts;
     private TextView mText;
@@ -42,6 +44,11 @@ public class SecondQuestion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second_question);
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(EXTRA_MESSAGE);
+        // Capture the layout's TextView and set the string as its text
+        mText = (TextView) findViewById(R.id.welcome_text);
+        mText.setText("Second question would be <b>" + message + "?</b> as an opinion scale from 1 to 10.");
 
         mTextResult = (TextView) findViewById(R.id.result);
         mStatus = (TextView) findViewById(R.id.status);
@@ -51,7 +58,6 @@ public class SecondQuestion extends AppCompatActivity {
         mColorNotHearing = ResourcesCompat.getColor(resources, R.color.status_not_hearing, theme);
         // Prepare Cloud Speech API
         bindService(new Intent(this, SpeechService.class), mServiceConnection, BIND_AUTO_CREATE);
-        mText = (TextView) findViewById(R.id.welcome_text);
 
         mTts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
 
@@ -76,7 +82,7 @@ public class SecondQuestion extends AppCompatActivity {
                     HashMap<String, String> params = new HashMap<String, String>();
 
                     params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");
-                    mTts.speak("Second question would be How would you rate our last meeting?\nas an opinion scale from 1 to 10. \n\n Is that ok?", TextToSpeech.QUEUE_FLUSH, params);
+                    mTts.speak(mText.getText().toString().replace("<b>", "").replace("</b>", ""), TextToSpeech.QUEUE_FLUSH, params);
                 } else {
                     mTts = null;
                     Log.e("MainActivity", "Failed to initialize the TextToSpeech engine");
@@ -168,8 +174,8 @@ public class SecondQuestion extends AppCompatActivity {
                                 if (isFinal) {
                                     mTextResult.setText(text);
                                     mVoiceRecorder.stop();
-                                    Intent intent = new Intent(getApplicationContext(), WhatTitle.class);
-                                    startActivity(intent);
+                                    //TODO Intent intent = new Intent(getApplicationContext(), WhatTitle.class);
+                                    //startActivity(intent);
                                 } else {
                                     mTextResult.setText(text);
                                 }
