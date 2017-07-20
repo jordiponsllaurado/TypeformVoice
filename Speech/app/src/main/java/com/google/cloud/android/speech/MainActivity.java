@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements MessageDialogFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mText = (TextView) findViewById(R.id.welcome_text);
-        mText.setText(Html.fromHtml("Hi <b>Josep</b>, \nI'm Bob the Builder, what would you like to create?"));
+        mText.setText(Html.fromHtml("Hi <b>Human</b>, \nI'm Bob the Builder, what would you like to create?"));
         mTextResult = (TextView) findViewById(R.id.result);
         final Resources resources = getResources();
         final Resources.Theme theme = getTheme();

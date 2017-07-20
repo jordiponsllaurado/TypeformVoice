@@ -10,8 +10,11 @@ import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -30,14 +33,10 @@ public class Submit extends AppCompatActivity {
 
     public TextToSpeech mTts;
     private TextView mText;
-    private TextView mTextResult;
+    private Button emailBtn;
     public BobTheBuilder bob;
 
     private SpeechService mSpeechService;
-
-    // Resource caches
-    private int mColorHearing;
-    private int mColorNotHearing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +45,8 @@ public class Submit extends AppCompatActivity {
 
         Intent messageIntent = getIntent();
         String message = messageIntent.getStringExtra(EXTRA_MESSAGE);
+
+        mText = (TextView) findViewById(R.id.welcome_text);
 
         String json = "{" +
                 "  \"title\":\"Challenge satisfaction survey\"," +
@@ -115,7 +116,27 @@ public class Submit extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
-                                    startVoiceRecorder();
+                                    emailBtn = (Button) findViewById(R.id.email);
+                                    emailBtn.setOnClickListener(new View.OnClickListener() {
+                                        public void onClick(View v) {
+                                            String responseBody = bob.getResponseBody();
+                                            try {
+                                                String jsonObj = new JSONObject(responseBody).getString("id");
+
+
+                                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                                intent.setType("message/rfc822");
+                                                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"all@typeform.com"});
+                                                intent.putExtra(Intent.EXTRA_SUBJECT, "Rate the Challenge!");
+                                                intent.setPackage("com.google.android.gm");
+                                                intent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml("Please fill the following form: <a href=\"https://pauboix.typeform.com/to" + jsonObj + "\">Link</a>"));
+                                                if (intent.resolveActivity(getPackageManager())!=null)
+                                                    startActivity(intent);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -124,7 +145,7 @@ public class Submit extends AppCompatActivity {
                     HashMap<String, String> params = new HashMap<String, String>();
 
                     params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID,"stringId");
-                    mTts.speak("Your Typeform is Done!\n Do you want to check the Typeform first or to send it out now?", TextToSpeech.QUEUE_FLUSH, params);
+                    mTts.speak("Your Typeform is Done!\n Do you want to send it out now?", TextToSpeech.QUEUE_FLUSH, params);
                 } else {
                     mTts = null;
                     Log.e("MainActivity", "Failed to initialize the TextToSpeech engine");
@@ -139,8 +160,8 @@ public class Submit extends AppCompatActivity {
         stopVoiceRecorder();
 
         // Stop Cloud Speech API
-        mSpeechService.removeListener(mSpeechServiceListener);
-        unbindService(mServiceConnection);
+        //mSpeechService.removeListener(mSpeechServiceListener);
+        //unbindService(mServiceConnection);
         mSpeechService = null;
 
         super.onStop();
@@ -174,7 +195,6 @@ public class Submit extends AppCompatActivity {
     };
 
 
-
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
@@ -201,15 +221,19 @@ public class Submit extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mTextResult.setText(text);
 
                                 if (isFinal) {
-                                    mTextResult.setText(text);
                                     mVoiceRecorder.stop();
                                     String responseBody = bob.getResponseBody();
-                                    //TODO: OPEN GMAIL
+                                    Intent intent = new Intent(Intent.ACTION_SEND);
+                                    intent.setType("message/rfc822");
+                                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"all@typeform.com"});
+                                    intent.putExtra(Intent.EXTRA_SUBJECT, "Rate the Challenge!");
+                                    intent.setPackage("com.google.android.gm");
+                                    intent.putExtra(Intent.EXTRA_TEXT, responseBody);
+                                    if (intent.resolveActivity(getPackageManager())!=null)
+                                        startActivity(intent);
                                 } else {
-                                    mTextResult.setText(text);
                                 }
                             }
                         });
