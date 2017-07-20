@@ -95,6 +95,19 @@ public class CommandNotFound  extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        // Stop listening to voice
+        stopVoiceRecorder();
+
+        // Stop Cloud Speech API
+        mSpeechService.removeListener(mSpeechServiceListener);
+        unbindService(mServiceConnection);
+        mSpeechService = null;
+
+        super.onStop();
+    }
+
     //////////////// SPEECH API ////////////////
     private VoiceRecorder mVoiceRecorder;
     private final VoiceRecorder.Callback mVoiceCallback = new VoiceRecorder.Callback() {
