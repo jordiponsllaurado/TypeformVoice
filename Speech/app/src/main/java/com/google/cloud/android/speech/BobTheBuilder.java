@@ -41,7 +41,7 @@ public class BobTheBuilder extends AsyncTask<Void, Void, Void> {
             httpost.setEntity(entityPayload);
             httpost.setHeader("Accept", "application/json");
             httpost.setHeader("Content-type", "application/json");
-            httpost.setHeader("Authorization", "<uthorization>");
+            httpost.setHeader("Authorization", "Bearer 8g5iwwC8mLPNJd21NwRY8OdPVDYlGaUmgNZBNpxL9mA=");
 
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             HttpResponse response = httpclient.execute(httpost);

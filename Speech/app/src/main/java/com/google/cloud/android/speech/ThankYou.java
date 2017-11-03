@@ -10,12 +10,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.skyfishjy.library.RippleBackground;
@@ -38,10 +36,6 @@ public class ThankYou extends AppCompatActivity {
 
     private SpeechService mSpeechService;
 
-    // Resource caches
-    private int mColorHearing;
-    private int mColorNotHearing;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +44,7 @@ public class ThankYou extends AppCompatActivity {
         mTextResult = (TextView) findViewById(R.id.result);
         final Resources resources = getResources();
         final Resources.Theme theme = getTheme();
-        mColorHearing = ResourcesCompat.getColor(resources, R.color.status_hearing, theme);
-        mColorNotHearing = ResourcesCompat.getColor(resources, R.color.status_not_hearing, theme);
+
         // Prepare Cloud Speech API
         bindService(new Intent(this, SpeechService.class), mServiceConnection, BIND_AUTO_CREATE);
         mText = (TextView) findViewById(R.id.welcome_text);
@@ -73,7 +66,6 @@ public class ThankYou extends AppCompatActivity {
                                 @Override
                                 public void run() {
                                     final RippleBackground rippleBackground=(RippleBackground)findViewById(R.id.content);
-                                    ImageView imageView=(ImageView)findViewById(R.id.centerImage);
                                     rippleBackground.startRippleAnimation();
                                     startVoiceRecorder();
                                 }
